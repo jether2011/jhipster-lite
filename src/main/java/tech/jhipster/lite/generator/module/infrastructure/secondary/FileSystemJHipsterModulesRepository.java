@@ -1,37 +1,40 @@
 package tech.jhipster.lite.generator.module.infrastructure.secondary;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.function.Consumer;
 import org.springframework.stereotype.Repository;
 import tech.jhipster.lite.error.domain.Assert;
-import tech.jhipster.lite.error.domain.GeneratorException;
-import tech.jhipster.lite.generator.module.domain.JHipsterModule;
-import tech.jhipster.lite.generator.module.domain.JHipsterModuleFile;
+import tech.jhipster.lite.generator.module.domain.JHipsterModuleChanges;
 import tech.jhipster.lite.generator.module.domain.JHipsterModulesRepository;
+import tech.jhipster.lite.generator.module.domain.postaction.JHipsterModuleExecutionContext;
 
 @Repository
 class FileSystemJHipsterModulesRepository implements JHipsterModulesRepository {
 
+  private final FileSystemJHipsterModuleFiles files;
+  private final FileSystemJavaDependenciesCommandsHandler javaDependencies;
+  private final FileSystemSpringPropertiesCommandsHandler springProperties;
+
+  public FileSystemJHipsterModulesRepository(
+    FileSystemJHipsterModuleFiles files,
+    FileSystemJavaDependenciesCommandsHandler javaDependencies,
+    FileSystemSpringPropertiesCommandsHandler springProperties
+  ) {
+    this.files = files;
+    this.javaDependencies = javaDependencies;
+    this.springProperties = springProperties;
+  }
+
   @Override
-  public void apply(JHipsterModule module) {
-    Assert.notNull("module", module);
+  public void apply(JHipsterModuleChanges changes) {
+    Assert.notNull("changes", changes);
 
-    writeFiles(module);
-  }
+    changes.preActions().run();
 
-  private void writeFiles(JHipsterModule module) {
-    module.files().forEach(writeFile(module));
-  }
+    files.create(changes.projectFolder(), changes.files());
+    javaDependencies.handle(changes.indentation(), changes.projectFolder(), changes.javaDependenciesCommands());
+    springProperties.handle(changes.projectFolder(), changes.springProperties());
 
-  private Consumer<JHipsterModuleFile> writeFile(JHipsterModule module) {
-    return file -> {
-      try {
-        Files.createDirectories(file.destination().folder(module.projectFolder()));
-        Files.writeString(file.destination().pathInProject(module.projectFolder()), file.content().read(module.context()));
-      } catch (IOException e) {
-        throw new GeneratorException("Can't write file to " + file.destination().toString() + ": " + e.getMessage(), e);
-      }
-    };
+    changes.mandatoryReplacements().apply(changes.projectFolder());
+    changes.optionalReplacements().apply(changes.projectFolder());
+    changes.postActions().run(new JHipsterModuleExecutionContext(changes.projectFolder()));
   }
 }

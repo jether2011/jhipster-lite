@@ -38,8 +38,12 @@ describe('ServiceProjection', () => {
     expect(toServiceProjection(Service.SPRINGBOOT_JWT_WITH_BASIC_AUTHENTICATION)).toEqual<ServiceProjection>(
       'spring-boot-jwt-with-basic-authentication'
     );
+    expect(toServiceProjection(Service.SPRINGBOOT_OAUTH2)).toEqual<ServiceProjection>('spring-boot-oauth2');
+    expect(toServiceProjection(Service.SPRINGBOOT_OAUTH2_ACCOUNT)).toEqual<ServiceProjection>('spring-boot-oauth2-account');
     expect(toServiceProjection(Service.SPRINGBOOT_MVC_WITH_TOMCAT)).toEqual<ServiceProjection>('spring-boot-mvc-with-tomcat');
     expect(toServiceProjection(Service.SPRINGBOOT_WEBFLUX_NETTY)).toEqual<ServiceProjection>('spring-boot-webflux-netty');
+    expect(toServiceProjection(Service.SPRINGBOOT_CUCUMBER)).toEqual<ServiceProjection>('spring-boot-cucumber');
+    expect(toServiceProjection(Service.SPRINGBOOT_PULSAR)).toEqual<ServiceProjection>('spring-boot-pulsar');
     expect(toServiceProjection(Service.REACT)).toEqual<ServiceProjection>('react');
     expect(toServiceProjection(Service.REACT_STYLED)).toEqual<ServiceProjection>('react-styled');
     expect(toServiceProjection(Service.VUE)).toEqual<ServiceProjection>('vue');
@@ -84,6 +88,8 @@ describe('ServiceProjection', () => {
     );
     expect(fromServiceProjection('spring-boot-mvc-with-tomcat')).toEqual<Service>(Service.SPRINGBOOT_MVC_WITH_TOMCAT);
     expect(fromServiceProjection('spring-boot-webflux-netty')).toEqual<Service>(Service.SPRINGBOOT_WEBFLUX_NETTY);
+    expect(fromServiceProjection('spring-boot-pulsar')).toEqual<Service>(Service.SPRINGBOOT_PULSAR);
+    expect(fromServiceProjection('spring-boot-cucumber')).toEqual<Service>(Service.SPRINGBOOT_CUCUMBER);
     expect(fromServiceProjection('react')).toEqual<Service>(Service.REACT);
     expect(fromServiceProjection('react-styled')).toEqual<Service>(Service.REACT_STYLED);
     expect(fromServiceProjection('vue')).toEqual<Service>(Service.VUE);

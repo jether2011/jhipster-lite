@@ -107,8 +107,12 @@ export default class SpringBootRepository implements SpringBootService {
     await this.postAndGetHistory('/api/servers/spring-boot/security-systems/jwt/basic-auth', toRestProject(project));
   }
 
-  async addOauth2(project: Project): Promise<void> {
+  async addOAuth2(project: Project): Promise<void> {
     await this.postAndGetHistory('/api/servers/spring-boot/security-systems/oauth2', toRestProject(project));
+  }
+
+  async addOAuth2Account(project: Project): Promise<void> {
+    await this.postAndGetHistory('/api/servers/spring-boot/security-systems/oauth2/account', toRestProject(project));
   }
 
   async addSpringdocJWT(project: Project): Promise<void> {
@@ -153,5 +157,13 @@ export default class SpringBootRepository implements SpringBootService {
 
   async addSimpleCache(project: Project): Promise<void> {
     await this.postAndGetHistory('/api/servers/spring-boot/caches/simple', toRestProject(project));
+  }
+
+  async addCucumber(project: Project): Promise<void> {
+    await this.postAndGetHistory('/api/servers/spring-boot/component-tests/cucumber', toRestProject(project));
+  }
+
+  async addPulsar(project: Project): Promise<void> {
+    await this.postAndGetHistory('/api/servers/spring-boot/brokers/pulsar', toRestProject(project));
   }
 }

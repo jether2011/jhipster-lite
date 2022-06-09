@@ -45,6 +45,8 @@ describe('Generator', () => {
 
     cy.get(springBootGeneratorSelector('add-spring-boot-jwt-button')).contains('Security JWT');
     cy.get(springBootGeneratorSelector('add-spring-boot-jwt-with-basic-authentication-button')).contains('Security JWT Basic Auth');
+    cy.get(springBootGeneratorSelector('add-spring-boot-oauth2-button')).contains('Security OAuth2');
+    cy.get(springBootGeneratorSelector('add-spring-boot-oauth2-account-button')).contains('OAuth2 Account Context');
 
     cy.get(springBootGeneratorSelector('add-postgresql-button')).contains('PostgreSQL');
     cy.get(springBootGeneratorSelector('add-mysql-button')).contains('MySQL');
@@ -55,6 +57,9 @@ describe('Generator', () => {
     cy.get(springBootGeneratorSelector('add-liquibase-button')).contains('Liquibase');
     cy.get(springBootGeneratorSelector('add-liquibase-with-users-and-authority-changelogs-button')).contains('Liquibase with users');
     cy.get(springBootGeneratorSelector('add-mongock-button')).contains('Mongock');
+
+    cy.get(springBootGeneratorSelector('add-spring-boot-pulsar-button')).contains('Pulsar');
+    cy.get(springBootGeneratorSelector('add-spring-boot-cucumber-button')).contains('Cucumber');
   });
 
   it('should display angular', () => {

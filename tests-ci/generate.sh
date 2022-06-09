@@ -104,6 +104,7 @@ elif [[ $application == 'fullapp' ]]; then
 
   callApi "/api/servers/spring-boot/databases/postgresql"
   callApi "/api/servers/spring-boot/features/user/postgresql"
+  callApi "/api/servers/spring-boot/component-tests/cucumber"
   callApi "/api/servers/spring-boot/database-migration-tools/liquibase"
   callApi "/api/servers/spring-boot/database-migration-tools/liquibase/user"
 
@@ -254,11 +255,18 @@ elif [[ $application == 'kafkaapp' ]]; then
   callApi "/api/servers/spring-boot/brokers/kafka/dummy-producer-consumer"
   callApi "/api/servers/spring-boot/brokers/kafka/akhq"
 
+elif [[ $application == 'pulsarapp' ]]; then
+  springboot_mvc
+  sonar_back
+
+  callApi "/api/servers/spring-boot/brokers/pulsar"
+
 elif [[ $application == 'reactiveapp' ]]; then
   springboot
   sonar_back
 
   callApi "/api/servers/spring-boot/reactive-servers/netty"
+  callApi "/api/servers/spring-boot/technical-tools/actuator"
 
 else
   echo "*** Unknown configuration..."

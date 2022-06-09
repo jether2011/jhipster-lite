@@ -1,6 +1,7 @@
 package tech.jhipster.lite.generator.module.infrastructure.secondary;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,8 +12,14 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.assertj.core.api.SoftAssertions;
+import tech.jhipster.lite.generator.module.application.JHipsterModulesApplicationService;
 import tech.jhipster.lite.generator.module.domain.JHipsterModule;
-import tech.jhipster.lite.generator.module.domain.JHipsterProjectFolder;
+import tech.jhipster.lite.generator.module.domain.JHipsterModuleEvents;
+import tech.jhipster.lite.generator.module.domain.JHipsterModuleSlug;
+import tech.jhipster.lite.generator.module.domain.JHipsterModuleToApply;
+import tech.jhipster.lite.generator.module.domain.properties.JHipsterProjectFolder;
+import tech.jhipster.lite.generator.project.domain.Project;
+import tech.jhipster.lite.generator.project.domain.Project.ProjectBuilder;
 
 public final class JHipsterModulesAssertions {
 
@@ -22,18 +29,56 @@ public final class JHipsterModulesAssertions {
     return new ModuleAsserter(module);
   }
 
+  public static ModuleAsserter assertThatModuleOnProjectWithDefaultPom(JHipsterModule module) {
+    addPomToproject(module.projectFolder());
+
+    return new ModuleAsserter(module);
+  }
+
+  private static void addPomToproject(JHipsterProjectFolder project) {
+    Path folder = Paths.get(project.folder());
+    try {
+      Files.createDirectories(folder);
+    } catch (IOException e) {
+      throw new AssertionError(e);
+    }
+
+    Path pomPath = folder.resolve("pom.xml");
+    try {
+      Files.copy(Paths.get("src/test/resources/projects/maven/pom.xml"), pomPath);
+    } catch (IOException e) {
+      throw new AssertionError(e);
+    }
+  }
+
   public static class ModuleAsserter {
 
     private static final String SLASH = "/";
 
-    private static final FileSystemJHipsterModulesRepository repository = new FileSystemJHipsterModulesRepository();
+    private static final JHipsterModulesApplicationService modules = buildApplicationService();
 
     private final JHipsterProjectFolder projectFolder;
+
+    private static JHipsterModulesApplicationService buildApplicationService() {
+      FileSystemJHipsterModulesRepository modulesRepository = new FileSystemJHipsterModulesRepository(
+        new FileSystemJHipsterModuleFiles(),
+        new FileSystemJavaDependenciesCommandsHandler(),
+        new FileSystemSpringPropertiesCommandsHandler()
+      );
+
+      return new JHipsterModulesApplicationService(
+        modulesRepository,
+        mock(JHipsterModuleEvents.class),
+        new FileSystemCurrentJavaDependenciesVersionsRepository(),
+        new FileSystemProjectJavaDependenciesRepository()
+      );
+    }
 
     private ModuleAsserter(JHipsterModule module) {
       assertThat(module).as("Can't make assertions on a module without module").isNotNull();
 
-      repository.apply(module);
+      ProjectBuilder project = Project.builder().folder(module.projectFolder().get());
+      modules.apply(new JHipsterModuleToApply(project.build(), new JHipsterModuleSlug("test-module"), module));
       projectFolder = module.projectFolder();
     }
 
@@ -98,6 +143,20 @@ public final class JHipsterModulesAssertions {
         Path path = moduleAsserter.projectFolder.filePath(file);
 
         assertThat(Files.readString(path)).as(() -> "Can't find " + content + " in " + path.toString()).contains(content);
+      } catch (IOException e) {
+        throw new AssertionError("Can't check file content: " + e.getMessage(), e);
+      }
+
+      return this;
+    }
+
+    public ModuleFileAsserter notContaining(String content) {
+      assertThat(content).as("Can't check blank content").isNotBlank();
+
+      try {
+        Path path = moduleAsserter.projectFolder.filePath(file);
+
+        assertThat(Files.readString(path)).as(() -> "Found " + content + " in " + path.toString()).doesNotContain(content);
       } catch (IOException e) {
         throw new AssertionError("Can't check file content: " + e.getMessage(), e);
       }

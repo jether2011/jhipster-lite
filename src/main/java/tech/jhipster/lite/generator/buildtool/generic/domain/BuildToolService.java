@@ -16,8 +16,13 @@ public interface BuildToolService {
   void addRepository(Project project, Repository repository);
   void addPluginRepository(Project project, Repository repository);
   void deleteDependency(Project project, Dependency dependency);
+  void addVersionPropertyAndDependency(Project project, String versionProperty, Dependency dependency);
 
   void init(Project project, BuildToolType buildTool);
 
   Optional<String> getVersion(Project project, String name);
+
+  Optional<String> getGroup(Project project);
+
+  Optional<String> getName(Project project);
 }

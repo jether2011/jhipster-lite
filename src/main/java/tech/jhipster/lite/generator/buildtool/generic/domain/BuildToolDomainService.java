@@ -42,6 +42,15 @@ public class BuildToolDomainService implements BuildToolService {
   }
 
   @Override
+  public void addVersionPropertyAndDependency(Project project, String versionProperty, Dependency dependency) {
+    String version = getVersion(project, versionProperty).orElseThrow(() -> new GeneratorException(versionProperty + " version not found"));
+
+    Dependency dependencyWithVersion = dependency.toBuilder().version("\\${" + versionProperty + ".version}").build();
+    addProperty(project, versionProperty + ".version", version);
+    addDependency(project, dependencyWithVersion);
+  }
+
+  @Override
   public void addDependency(Project project, Dependency dependency, List<Dependency> exclusions) {
     if (project.isMavenProject()) {
       mavenService.addDependency(project, dependency, exclusions);
@@ -130,6 +139,24 @@ public class BuildToolDomainService implements BuildToolService {
   public Optional<String> getVersion(Project project, String name) {
     if (project.isMavenProject()) {
       return mavenService.getVersion(name);
+    }
+    throw new GeneratorException(EXCEPTION_NO_BUILD_TOOL);
+  }
+
+  @Override
+  public Optional<String> getGroup(Project project) {
+    if (project.isMavenProject()) {
+      return mavenService.getGroupId(project.getFolder());
+    } else if (project.isGradleProject()) {
+      return gradleService.getGroup(project.getFolder());
+    }
+    throw new GeneratorException(EXCEPTION_NO_BUILD_TOOL);
+  }
+
+  @Override
+  public Optional<String> getName(Project project) {
+    if (project.isMavenProject()) {
+      return mavenService.getName(project.getFolder());
     }
     throw new GeneratorException(EXCEPTION_NO_BUILD_TOOL);
   }

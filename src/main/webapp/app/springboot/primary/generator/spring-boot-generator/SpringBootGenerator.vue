@@ -55,6 +55,18 @@
           :selector-prefix="selectorPrefix"
           @click.prevent="addSpringBootSecurityJWTBasicAuth"
         />
+        <GeneratorButtonVue
+          :label="'Security OAuth2'"
+          :service="'spring-boot-oauth2'"
+          :selector-prefix="selectorPrefix"
+          @click.prevent="addSpringBootSecurityOAuth2"
+        />
+        <GeneratorButtonVue
+          :label="'OAuth2 Account Context'"
+          :service="'spring-boot-oauth2-account'"
+          :selector-prefix="selectorPrefix"
+          @click.prevent="addSpringBootSecurityOAuth2Account"
+        />
       </div>
       <div>
         <GeneratorButtonVue
@@ -83,6 +95,22 @@
           @click.prevent="addLiquibaseUser"
         />
         <GeneratorButtonVue :label="'Mongock'" :service="'mongock'" :selector-prefix="selectorPrefix" @click.prevent="addMongock" />
+      </div>
+      <div>
+        <GeneratorButtonVue
+          :label="'Pulsar'"
+          :service="'spring-boot-pulsar'"
+          :selector-prefix="selectorPrefix"
+          @click.prevent="addPulsar"
+        />
+      </div>
+      <div>
+        <GeneratorButtonVue
+          :label="'Cucumber'"
+          :service="'spring-boot-cucumber'"
+          :selector-prefix="selectorPrefix"
+          @click.prevent="addCucumber"
+        />
       </div>
     </div>
   </div>

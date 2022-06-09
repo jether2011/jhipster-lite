@@ -102,8 +102,26 @@ export default defineComponent({
       if (props.project.folder !== '') {
         await springBootService
           .addBasicAuthJWT(toProject(props.project as ProjectToUpdate))
-          .then(() => alertBus.success('SpringBoot Security JWT Basic Auth  successfully added'))
+          .then(() => alertBus.success('SpringBoot Security JWT Basic Auth successfully added'))
           .catch(error => alertBus.error(`Adding SpringBoot Security JWT Basic Auth to project failed ${error}`));
+      }
+    };
+
+    const addSpringBootSecurityOAuth2 = async (): Promise<void> => {
+      if (props.project.folder !== '') {
+        await springBootService
+          .addOAuth2(toProject(props.project as ProjectToUpdate))
+          .then(() => alertBus.success('SpringBoot Security OAuth2 successfully added'))
+          .catch(error => alertBus.error(`Adding SpringBoot Security OAuth2 to project failed ${error}`));
+      }
+    };
+
+    const addSpringBootSecurityOAuth2Account = async (): Promise<void> => {
+      if (props.project.folder !== '') {
+        await springBootService
+          .addOAuth2Account(toProject(props.project as ProjectToUpdate))
+          .then(() => alertBus.success('SpringBoot Security OAuth2 Account Context successfully added'))
+          .catch(error => alertBus.error(`Adding SpringBoot Security OAuth2 Account Context to project failed ${error}`));
       }
     };
 
@@ -188,6 +206,24 @@ export default defineComponent({
       }
     };
 
+    const addCucumber = async (): Promise<void> => {
+      if (props.project.folder !== '') {
+        await springBootService
+          .addCucumber(toProject(props.project as ProjectToUpdate))
+          .then(() => alertBus.success('Cucumber successfully added'))
+          .catch(error => alertBus.error(`Adding Cucumber to project failed ${error}`));
+      }
+    };
+
+    const addPulsar = async (): Promise<void> => {
+      if (props.project.folder !== '') {
+        await springBootService
+          .addPulsar(toProject(props.project as ProjectToUpdate))
+          .then(() => alertBus.success('Pulsar successfully added'))
+          .catch(error => alertBus.error(`Adding Pulsar to project failed ${error}`));
+      }
+    };
+
     return {
       selectorPrefix,
       addSpringBoot,
@@ -199,6 +235,8 @@ export default defineComponent({
       addSpringBootLogstash,
       addSpringBootSecurityJWT,
       addSpringBootSecurityJWTBasicAuth,
+      addSpringBootSecurityOAuth2,
+      addSpringBootSecurityOAuth2Account,
       addPostgreSQL,
       addMySQL,
       addMariaDB,
@@ -208,6 +246,8 @@ export default defineComponent({
       addLiquibase,
       addLiquibaseUser,
       addMongock,
+      addCucumber,
+      addPulsar,
     };
   },
 });

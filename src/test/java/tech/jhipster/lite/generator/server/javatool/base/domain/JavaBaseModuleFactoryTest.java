@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import tech.jhipster.lite.UnitTest;
 import tech.jhipster.lite.common.domain.FileUtils;
 import tech.jhipster.lite.generator.module.domain.JHipsterModule;
+import tech.jhipster.lite.generator.module.domain.JHipsterModulesFixture;
+import tech.jhipster.lite.generator.module.domain.properties.JHipsterModuleProperties;
 
 @UnitTest
 class JavaBaseModuleFactoryTest {
@@ -14,9 +16,8 @@ class JavaBaseModuleFactoryTest {
 
   @Test
   void shouldCreateModule() {
-    JavaBaseModuleProperties properties = JavaBaseModuleProperties
-      .builder()
-      .project(FileUtils.tmpDirForTest())
+    JHipsterModuleProperties properties = JHipsterModulesFixture
+      .propertiesBuilder(FileUtils.tmpDirForTest())
       .basePackage("com.jhipster.test")
       .projectBaseName("myapp")
       .build();
@@ -24,6 +25,7 @@ class JavaBaseModuleFactoryTest {
     JHipsterModule module = factory.buildModule(properties);
 
     assertThatModule(module)
+      .createPrefixedFiles("src/main/java/com/jhipster/test", "BusinessContext.java", "SharedKernel.java")
       .createPrefixedFiles(
         "src/main/java/com/jhipster/test/error/domain",
         "Assert.java",
@@ -43,8 +45,13 @@ class JavaBaseModuleFactoryTest {
         "com/jhipster/test/error/domain/MissingMandatoryValueExceptionTest.java",
         "com/jhipster/test/common/domain/MyappCollectionsTest.java",
         "com/jhipster/test/UnitTest.java",
+        "com/jhipster/test/ComponentTest.java",
         "com/jhipster/test/ReplaceCamelCase.java"
       )
+      .createFile("src/main/java/com/jhipster/test/error/package-info.java")
+      .and()
+      .createFile("src/main/java/com/jhipster/test/common/package-info.java")
+      .and()
       .createFile("src/main/java/com/jhipster/test/common/domain/MyappCollections.java")
       .containing("class MyappCollections");
   }

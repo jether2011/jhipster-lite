@@ -30,8 +30,12 @@ export type ServiceProjection =
   | 'spring-doc'
   | 'spring-boot-jwt'
   | 'spring-boot-jwt-with-basic-authentication'
+  | 'spring-boot-oauth2'
+  | 'spring-boot-oauth2-account'
   | 'spring-boot-mvc-with-tomcat'
   | 'spring-boot-webflux-netty'
+  | 'spring-boot-cucumber'
+  | 'spring-boot-pulsar'
   | 'react'
   | 'react-styled'
   | 'vue'
@@ -67,8 +71,12 @@ const SERVICES_PROJECTION: Record<Service, ServiceProjection> = {
   [Service.SPRING_DOC]: 'spring-doc',
   [Service.SPRINGBOOT_JWT]: 'spring-boot-jwt',
   [Service.SPRINGBOOT_JWT_WITH_BASIC_AUTHENTICATION]: 'spring-boot-jwt-with-basic-authentication',
+  [Service.SPRINGBOOT_OAUTH2]: 'spring-boot-oauth2',
+  [Service.SPRINGBOOT_OAUTH2_ACCOUNT]: 'spring-boot-oauth2-account',
   [Service.SPRINGBOOT_MVC_WITH_TOMCAT]: 'spring-boot-mvc-with-tomcat',
   [Service.SPRINGBOOT_WEBFLUX_NETTY]: 'spring-boot-webflux-netty',
+  [Service.SPRINGBOOT_CUCUMBER]: 'spring-boot-cucumber',
+  [Service.SPRINGBOOT_PULSAR]: 'spring-boot-pulsar',
   [Service.REACT]: 'react',
   [Service.REACT_STYLED]: 'react-styled',
   [Service.VUE]: 'vue',
@@ -107,8 +115,12 @@ const SERVICES: Record<ServiceProjection, Service> = {
   'spring-doc': Service.SPRING_DOC,
   'spring-boot-jwt': Service.SPRINGBOOT_JWT,
   'spring-boot-jwt-with-basic-authentication': Service.SPRINGBOOT_JWT_WITH_BASIC_AUTHENTICATION,
+  'spring-boot-oauth2': Service.SPRINGBOOT_OAUTH2,
+  'spring-boot-oauth2-account': Service.SPRINGBOOT_OAUTH2_ACCOUNT,
   'spring-boot-mvc-with-tomcat': Service.SPRINGBOOT_MVC_WITH_TOMCAT,
   'spring-boot-webflux-netty': Service.SPRINGBOOT_WEBFLUX_NETTY,
+  'spring-boot-cucumber': Service.SPRINGBOOT_CUCUMBER,
+  'spring-boot-pulsar': Service.SPRINGBOOT_PULSAR,
   react: Service.REACT,
   'react-styled': Service.REACT_STYLED,
   vue: Service.VUE,
